@@ -1,0 +1,43 @@
+{
+    "date": {
+        "2024-05-04": {
+            "Food": 100.0
+        },
+        "2024-05-01": {
+            "Food": 12.5,
+            "Personal care": 10.0
+        },
+        "2024-04-29": {
+            "Food": 15.6
+        },
+        "2024-04-20": {
+            "Food": 12.0,
+            "Personal care": 10.0
+        },
+        "2024-04-12": {
+            "Household supplies": 20.0
+        },
+        "2024-05-03": {
+            "Food": 12.5,
+            "Housing": 20.0
+        }
+    },
+    "month": {
+        "May 2024": {
+            "limit": 1200.0,
+            "expenses": {
+                "Food": 125.0,
+                "Personal care": 10.0,
+                "Housing": 20.0
+            }
+        },
+        "April 2024": {
+            "limit": null,
+            "expenses": {
+                "Food": 27.6,
+                "Personal care": 10.0,
+                "Household supplies": 20.0
+            }
+        }
+    }
+}

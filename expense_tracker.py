@@ -18,6 +18,17 @@ def clear_screen():
 
 class ExpenseTracker:
     def __init__(self, user):
+        """
+        Initializes a new ExpenseTracker object.
+
+        Parameters:
+            user (str): The username of the current user.
+
+        Returns:
+            None
+
+        Method initializes the attributes of the ExpenseTracker object.
+        """
         self.user = user
         self.expense_report = ExpensesReport(self.user)
         self.expense_manager = ExpenseManager(self.user)
@@ -37,6 +48,18 @@ class ExpenseTracker:
         ])
 
     def run(self, clear=False):
+        """
+        Runs the expense tracking application.
+
+        Parameters:
+            clear (bool): Indicates whether to clear the screen before displaying the menu.
+
+        Returns:
+            bool: True if the user chooses to log out, False otherwise.
+
+        Method runs the expense tracking application, displaying the menu of available commands,
+        and executing the corresponding actions based on user input.
+        """
         self.expense_manager.check_emptiness()
         if clear:
             clear_screen()

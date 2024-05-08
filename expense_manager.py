@@ -20,6 +20,17 @@ def clear_screen():
 
 class ExpenseManager:
     def __init__(self, user):
+        """
+        Initializes a new ExpenseManager object.
+
+        Parameters:
+            user (str): The username of the current user.
+
+        Returns:
+            None
+
+        Method initializes the attributes of the ExpenseManager object.
+        """
         self.user = user
         self.expenses_table = PrettyTable()
         self.expenses_table.hrules = prettytable.ALL
@@ -117,6 +128,14 @@ class ExpenseManager:
         return False
 
     def initialize_file_with_format(self):
+        """
+        Initialize the JSON file with a predefined format.
+
+        Returns:
+            None
+
+        Method initializes the JSON file associated with the user with a predefined format.
+        """
         with open(f'users/{self.user}.json', 'w') as json_file:
             data = {
                 'date': {},
@@ -125,6 +144,14 @@ class ExpenseManager:
             json.dump(data, json_file, indent=4)
 
     def check_emptiness(self):
+        """
+        Check if the JSON file is empty or not in the desired format.
+
+        Returns:
+            None
+
+        Method checks if the JSON file associated with the user is empty or not in the desired format.
+        """
         try:
             with open(f'users/{self.user}.json', 'r') as json_file:
                 try:
@@ -141,6 +168,17 @@ class ExpenseManager:
             self.initialize_file_with_format()  # File doesn't exist, create with format
 
     def logo_table_expenses(self, date):
+        """
+        Display the logo and table of expenses.
+
+        Parameters:
+            date (str): The selected date.
+
+        Returns:
+            None
+
+        Method displays the logo of the user and the table of expenses for the selected date.
+        """
         clear_screen()
         print(self.expenses_table)
         print(f"SELECTED DATE - {date}")
@@ -148,6 +186,19 @@ class ExpenseManager:
         print(f"Username: {logo}\n")
 
     def save_expense(self, expense, amount, date):
+        """
+        Save the expense to the JSON file.
+
+        Parameters:
+            expense (str): The expense category.
+            amount (float): The amount spent.
+            date (str): The date of the expense.
+
+        Returns:
+            None
+
+        Method saves the expense and amount to the JSON file associated with the user.
+        """
         # Read existing data from the JSON file
         try:
             with open(f"users/{self.user}.json", "r") as file:
@@ -193,6 +244,17 @@ class ExpenseManager:
             json.dump(data, file, indent=4)
 
     def add_expenses(self, date=""):
+        """
+        Add expenses for a specific date.
+
+        Parameters:
+            date (str, optional): The date to add expenses for. Defaults to "".
+
+        Returns:
+            None
+
+        Method allows the user to add expenses for a specific date.
+        """
         if date == "":
             date = self.get_date()
         if date is None:
@@ -236,6 +298,17 @@ class ExpenseManager:
                 print()
 
     def set_limit(self, select_month_func):
+        """
+        Set a spending limit for a specific month.
+
+        Parameters:
+            select_month_func (function): A function to select the month.
+
+        Returns:
+            None
+
+        Method allows the user to set a spending limit for a specific month.
+        """
         # Load data from JSON file
         with open(f"users/{self.user}.json", "r") as file:
             data = json.load(file)

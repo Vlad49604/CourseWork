@@ -25,6 +25,17 @@ def clear_screen():
 class ExpensesReport:
 
     def __init__(self, user):
+        """
+        Initialize an ExpensesReport object.
+
+        Parameters:
+            user (str): The username associated with the report.
+
+        Returns:
+            None
+
+        Method initializes an ExpensesReport object with a PrettyTable for displaying report commands.
+        """
         self.user = user
         self.report_table = PrettyTable()
         self.report_table.field_names = ["Name of the command", "Command"]
@@ -52,6 +63,18 @@ class ExpensesReport:
                     "Please enter the month and year in the format 'Month Year' (e.g., 'May 2024')\n")
 
     def select_month(self, message):
+        """
+        Prompt the user to select a month.
+
+        Parameters:
+            message (str): The message indicating the action to be performed.
+
+        Returns:
+            str: The selected month in the format 'Month Year'.
+
+        Method prompts the user to either select the current month or another month.
+        """
+
         current_month = dt.datetime.now().strftime("%B %Y")
         change_month = input(
             f"Do you want to {message} {current_month}? (y/n): ").lower().strip()
@@ -141,33 +164,16 @@ class ExpensesReport:
 
         return "\n\n".join([str(table) for table in report_info])
 
-    @staticmethod
-    def get_month_report_info_smtp(month_data):
-        report_info = []
-
-        total_amount = 0
-        num_expenses = len(month_data.get('expenses', {}))
-
-        for expense, amount in month_data.get('expenses', {}).items():
-            report_info.append(f"{expense}: ${amount:.2f}")
-            total_amount += amount
-
-        if num_expenses > 0:
-            report_info.append("-" * 30)  # Add separator line
-
-        report_info.append(f"Total: ${total_amount:.2f}")
-
-        if 'limit' in month_data and isinstance(month_data['limit'], float):
-            limit = month_data['limit']
-            report_info.append(f"Limit: ${limit:.2f}")
-            amount_available = limit - total_amount
-            report_info.append(f"Amount available: ${amount_available:.2f}")
-        else:
-            report_info.append("No limit set for this month.")
-
-        return "\n".join(report_info)
-
     def short_month_data(self):
+        """
+        Display short data for the selected month.
+
+        Returns:
+            None
+
+        Method displays short data for the selected month, including total amount spent and limit information.
+        """
+
         # Load data from JSON file
         with open(f"users/{self.user}.json", "r") as file:
             data = json.load(file)
@@ -205,6 +211,17 @@ class ExpensesReport:
         input("Press to continue...")
 
     def get_month_data(self, s_month):
+        """
+        Get data for the selected month.
+
+        Parameters:
+            s_month (str): The selected month.
+
+        Returns:
+            dict: Data for the selected month.
+
+        Method retrieves data for the selected month from the JSON file.
+        """
         # Load data from JSON file
         with open(f"users/{self.user}.json", "r") as file:
             data = json.load(file)
@@ -213,6 +230,14 @@ class ExpensesReport:
         return data['month'].get(s_month)
 
     def display_month_data(self):
+        """
+        Display detailed data for the selected month.
+
+        Returns:
+            None
+
+        Method displays detailed data for the selected month, including expenses and limit information.
+        """
         selected_month = self.select_month("display data for")
 
         month_data = self.get_month_data(selected_month)
@@ -231,17 +256,49 @@ class ExpensesReport:
         input("Press to continue...")
 
     def send_month_report(self, selected_month):
-        user_address = self.get_user_address()
-        report_info = self.get_month_report_info_smtp(
-            self.get_month_data(selected_month))  # assuming month_data is available here
-        subject = "Month spending report"
+        """
+        Send the month report via email.
 
+        Parameters:
+            selected_month (str): The selected month.
+
+        Returns:
+            None
+
+        Method sends the month report via email to the user's address.
+        """
+        user_address = self.get_user_address()
+
+        month_data = self.get_month_data(selected_month)
+        report_info = []
+
+        total_amount = 0
+        num_expenses = len(month_data.get('expenses', {}))
+
+        for expense, amount in month_data.get('expenses', {}).items():
+            report_info.append(f"{expense}: ${amount:.2f}")
+            total_amount += amount
+
+        if num_expenses > 0:
+            report_info.append("-" * 30)  # Add separator line
+
+        report_info.append(f"Total: ${total_amount:.2f}")
+
+        if 'limit' in month_data and isinstance(month_data['limit'], float):
+            limit = month_data['limit']
+            report_info.append(f"Limit: ${limit:.2f}")
+            amount_available = limit - total_amount
+            report_info.append(f"Amount available: ${amount_available:.2f}")
+        else:
+            report_info.append("No limit set for this month.")
+
+        subject = "Month spending report"
         msg = MIMEMultipart()
         msg['From'] = MY_EMAIL
         msg['To'] = user_address
         msg['Subject'] = subject
 
-        body = f"Month: {selected_month}\n\n{report_info}"
+        body = f"Month: {selected_month}\n\n{'\n'.join(report_info)}"
 
         msg.attach(MIMEText(body, 'plain'))
 
@@ -264,6 +321,14 @@ class ExpensesReport:
         return category_totals
 
     def send_days_report(self):
+        """
+        Send the days report via email.
+
+        Returns:
+            None
+
+        Method sends the days report via email to the user's address.
+        """
         with open(f"users/{self.user}.json", "r") as file:
             data = json.load(file)
 
@@ -322,6 +387,14 @@ class ExpensesReport:
             connection.send_message(msg)
 
     def days_report(self):
+        """
+        Display the days report.
+
+        Returns:
+            None
+
+        Method displays the days report, including expenses for each day and category totals.
+        """
         with open(f"users/{self.user}.json", "r") as file:
             data = json.load(file)
 
@@ -377,6 +450,14 @@ class ExpensesReport:
         input("Press to continue...")
 
     def send_mail_report(self):
+        """
+        Send the mail report.
+
+        Returns:
+            None
+
+        Method prompts the user to select a report type and sends the corresponding report via email.
+        """
         clear_screen()
         while True:
             print(self.report_table)

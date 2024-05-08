@@ -17,6 +17,14 @@ def clear_screen():
 
 class User:
     def __init__(self):
+        """
+        Initializes a new User object.
+
+        Returns:
+            None
+
+        Method initializes the attributes of the User object.
+        """
         self.username = ""
         self.password = None
         self.table = PrettyTable()
@@ -31,7 +39,15 @@ class User:
         ])
 
     def user_checker(self):
+        """
+        Displays the main menu and prompts the user for input.
 
+        Returns:
+            str or int: The command chosen by the user.
+
+        Method displays the main menu, prompts the user for input,
+        and returns the selected command.
+        """
         while True:
             print(self.table)
             print()
@@ -68,6 +84,15 @@ class User:
             return {}
 
     def store_data(self, username, password):
+        """
+        Store user data in the JSON file.
+
+        Parameters:
+            username (str): The username of the new user.
+            password (str): The password of the new user.
+
+        Method stores the username and password of a new user in the JSON file.
+        """
         # Load existing data
         existing_data = self.load_existing_data()
 
@@ -88,6 +113,16 @@ class User:
             return False
 
     def create_new_user(self):
+        """
+        Creates a new user account in the system.
+
+        Returns:
+            bool: True if the user account is successfully created, False otherwise.
+
+        Method prompts the user to enter a new username and password,
+        validates the input, and creates a new user account in the system.
+        Returns True if the account is created successfully, otherwise False.
+        """
         clear_screen()
         print("CREATE NEW USER\n")
         print("Type 'cancel' at any point to cancel operation of creating a new user\n")
@@ -140,6 +175,16 @@ class User:
         return True
 
     def find_user(self):
+        """
+        Finds and validates the user in the system.
+
+        Returns:
+            bool: True if the user is found and validated, False otherwise.
+
+        Method prompts the user to enter their username and password,
+        validates the credentials against the system, and returns True if
+        the user is found and validated, otherwise False.
+        """
         clear_screen()
         print("LOG INTO USER ACCOUNT\n")
         username = input("Enter username: ").strip()
@@ -160,6 +205,16 @@ class User:
             return False
 
     def delete_account(self):
+        """
+        Deletes the user account from the system.
+
+        Returns:
+            bool: True if the user account is successfully deleted, False otherwise.
+
+        Method prompts the user to confirm the deletion of their account,
+        deletes the account from the system, and returns True if the deletion
+        is successful, otherwise False.
+        """
         clear_screen()
         print("Delete an account\n".upper())
         username = input("Enter username: ")

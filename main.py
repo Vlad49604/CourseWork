@@ -12,6 +12,7 @@ def clear_screen():
         _ = os.system('clear')
 
 
+# Activates a user session for the given username.
 def active_user(username):
     expense_tracker = ExpenseTracker(username)
     while True:
